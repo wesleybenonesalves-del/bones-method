@@ -87,6 +87,10 @@
 
         .file-info { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; font-family: monospace; color: #84cc16; font-size: 0.85rem; margin-bottom: 1.5rem; border: 1px solid rgba(132, 204, 22, 0.2); display: flex; align-items: center; gap: 10px; }
 
+        .bonus { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.2); border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 1.5rem; }
+        .bonus-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #fbbf24; margin-bottom: 0.5rem; }
+        .bonus p { color: #cbd5e1; font-size: 0.85rem; line-height: 1.5; margin: 0; }
+
         .btn { display: block; width: 100%; padding: 1rem; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; border: none; font-size: 1rem; }
         .btn-outline { background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.2); }
         .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.4); }
@@ -195,51 +199,47 @@
             <div class="card">
                 <div class="icon-wrapper"><img src="llms.jpg" alt="LLMs"></div>
                 <h3 class="card-title">LLMs na Prática</h3>
-                <p class="card-focus">Usar IA direito</p>
+                <p class="card-focus">Como Usar IA direito</p>
                 <ul class="card-features">
-                    <li>Como pedir pra IA e ela entregar certo, sem 15 tentativas</li>
+                    <li>Te ensino Engenharia de Prompt pra IA entregar certo, sem 15 tentativas</li>
                     <li>Montar agentes que fazem trabalho repetitivo por você</li>
-                    <li>Qual modelo usar pra quê (ChatGPT, Gemini, Claude)</li>
-                    <li>Automatizar emails, textos, análises, traduções</li>
+                    <li>Qual o modelo certo pra cada tarefa / economizar seus Tokens (ChatGPT, Gemini, Claude)</li>
+                    <li>Automatizar textos, análises, tarefas</li>
                 </ul>
-                <div class="file-info">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                    ilha-llms.htmz
+                <div class="bonus">
+                    <div class="bonus-label">🎁 Bônus incluso</div>
+                    <p>Minha Skill pessoal de Engenharia de Prompt</p>
                 </div>
                 <button class="btn btn-outline" onclick="openModal('ilha1')">Abrir detalhes</button>
             </div>
 
             <div class="card">
                 <div class="icon-wrapper"><img src="nexlev.jpg" alt="Conteúdo"></div>
-                <h3 class="card-title">Tema, Título e Roteiro</h3>
-                <p class="card-focus">O que postar e como embalar</p>
+                <h3 class="card-title">Mineração Hardcore</h3>
+                <p class="card-focus">Nicho, Tema, Título e Roteiro</p>
                 <ul class="card-features">
+                    <li>Análise forense de oportunidades reais pra criação de canais</li>
                     <li>Achar assunto com demanda real antes de produzir</li>
-                    <li>Montar títulos que geram clique sem ser clickbait</li>
-                    <li>Estruturar roteiro que segura a retenção até o fim</li>
-                    <li>Gerar pautas em lote com base em dados</li>
+                    <li>Montar títulos com concorrência e saturação medidas no algoritmo</li>
+                    <li>Estruturar roteiro sem achismo, com estruturas que já funcionam</li>
                 </ul>
-                <div class="file-info">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                    ilha-conteudo.htmz
+                <div class="bonus">
+                    <div class="bonus-label">🎁 Bônus incluso</div>
+                    <p>Meu agente de Mineração de Nicho e Validação para criar canais novos + Skill Especialista em Roteiro + Remoção de Caguetes de IA</p>
                 </div>
                 <button class="btn btn-outline" onclick="openModal('ilha2')">Abrir detalhes</button>
             </div>
 
             <div class="card">
                 <div class="icon-wrapper"><img src="automacao.jpg" alt="Automação"></div>
-                <h3 class="card-title">Automação de Vídeos</h3>
+                <h3 class="card-title">Automação de Vídeos Segura</h3>
                 <p class="card-focus">A máquina que roda sozinha</p>
                 <ul class="card-features">
-                    <li>Montar o pipeline que gera vídeo sem você gravar nada</li>
-                    <li>IA faz texto, voz, imagem e edição automaticamente</li>
-                    <li>Agendar e publicar em massa em vários canais</li>
-                    <li>Manter canais dark vivos sem tomar strike</li>
+                    <li>Montar o pipeline que gera vídeo do Tema ao Título SOZINHA</li>
+                    <li>IA faz texto, voz, imagem, decupagem e edição automaticamente</li>
+                    <li>Produzir vídeos simultaneamente</li>
+                    <li>Aumentar a produção diária e alimentar múltiplos canais</li>
                 </ul>
-                <div class="file-info">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                    ilha-automacao.htmz
-                </div>
                 <button class="btn btn-outline" onclick="openModal('ilha3')">Abrir detalhes</button>
             </div>
 
@@ -269,7 +269,7 @@
                 <div class="modal-icon blue" style="overflow:hidden"><img src="llms.jpg" alt="LLMs" style="width:100%;height:100%;object-fit:cover"></div>
                 <div class="modal-header-text">
                     <h2>LLMs na Prática</h2>
-                    <span class="tag blue">Usar IA direito</span>
+                    <span class="tag blue">Como Usar IA direito</span>
                 </div>
             </div>
             <div class="modal-body">
@@ -331,13 +331,13 @@
             <div class="modal-header">
                 <div class="modal-icon purple" style="overflow:hidden"><img src="nexlev.jpg" alt="Conteúdo" style="width:100%;height:100%;object-fit:cover"></div>
                 <div class="modal-header-text">
-                    <h2>Tema, Título e Roteiro</h2>
-                    <span class="tag purple">O que postar e como embalar</span>
+                    <h2>Mineração Hardcore</h2>
+                    <span class="tag purple">Nicho, Tema, Título e Roteiro</span>
                 </div>
             </div>
             <div class="modal-body">
                 <p class="modal-desc">
-                    A maioria dos canais morre no empacotamento. O vídeo pode até ser bom, mas se o tema não tem busca, o título não gera clique e o roteiro não segura atenção, ninguém vai assistir. <strong>Esse módulo é sobre pesquisa e estrutura</strong> — como escolher o que produzir usando dados, como montar um título que funciona sem apelação, e como escrever um roteiro que o algoritmo distribui porque as pessoas ficam até o final.
+                    Análise forense de oportunidades reais pra criação de canais. Você aprende a minerar assuntos com demanda real antes de produzir, montar títulos baseados em dados do algoritmo e estruturar roteiros que funcionam sem achismo.
                 </p>
 
                 <p class="section-label">Conteúdo</p>
@@ -345,32 +345,37 @@
                     <li>
                         <div class="module-num purple">01</div>
                         <div class="module-text">
-                            <strong>Pesquisa de demanda</strong>
-                            <span>Como encontrar assuntos que já têm gente procurando. Ferramentas, filtros e critérios pra validar um tema antes de gastar tempo produzindo.</span>
+                            <strong>Análise de Oportunidades</strong>
+                            <span>Análise forense de oportunidades reais pra criação de novos canais.</span>
                         </div>
                     </li>
                     <li>
                         <div class="module-num purple">02</div>
                         <div class="module-text">
-                            <strong>Títulos que geram clique</strong>
-                            <span>A lógica de um bom título: o que faz alguém parar o scroll e clicar. Padrões que funcionam, o que evitar, como testar.</span>
+                            <strong>Demanda Real</strong>
+                            <span>Achar assunto com demanda real e validada antes de produzir o primeiro vídeo.</span>
                         </div>
                     </li>
                     <li>
                         <div class="module-num purple">03</div>
                         <div class="module-text">
-                            <strong>Hooks e retenção</strong>
-                            <span>A abertura define se o vídeo vai ser entregue ou enterrado. Como estruturar os primeiros 30 segundos e manter a retenção alta no corpo do vídeo.</span>
+                            <strong>Títulos no Algoritmo</strong>
+                            <span>Montar títulos com concorrência e saturação medidas diretamente no algoritmo.</span>
                         </div>
                     </li>
                     <li>
                         <div class="module-num purple">04</div>
                         <div class="module-text">
-                            <strong>Produção de pautas em lote</strong>
-                            <span>Sistema pra gerar dezenas de pautas validadas de uma vez. Você nunca mais trava por falta de ideia — o problema vira escolher qual fazer primeiro.</span>
+                            <strong>Estruturas Vencedoras</strong>
+                            <span>Estruturar roteiro sem achismo, aplicando apenas estruturas que comprovadamente já funcionam.</span>
                         </div>
                     </li>
                 </ul>
+
+                <div class="bonus" style="margin-top: 1.5rem;">
+                    <div class="bonus-label">🎁 Bônus incluso</div>
+                    <p>Meu agente de Mineração de Nicho e Validação para criar canais novos + Skill Especialista em Roteiro + Remoção de Caguetes de IA</p>
+                </div>
 
                 <hr class="divider">
 
@@ -394,13 +399,13 @@
             <div class="modal-header">
                 <div class="modal-icon green" style="overflow:hidden"><img src="automacao.jpg" alt="Automação" style="width:100%;height:100%;object-fit:cover"></div>
                 <div class="modal-header-text">
-                    <h2>Automação de Vídeos</h2>
-                    <span class="tag green">Pipeline técnico</span>
+                    <h2>Automação de Vídeos Segura</h2>
+                    <span class="tag green">A máquina que roda sozinha</span>
                 </div>
             </div>
             <div class="modal-body">
                 <p class="modal-desc">
-                    Esse é o módulo técnico. Aqui você monta a esteira que faz tudo sozinha: a IA gera o texto, narra, cria ou busca as imagens, edita o vídeo e agenda a publicação. <strong>Você configura, roda e acompanha.</strong> Não precisa ser programador, mas precisa ter disposição pra seguir o setup e entender como as peças se encaixam. O objetivo é tirar você da operação manual.
+                    Esse é o módulo técnico. Aqui você monta a esteira que faz tudo sozinha: a IA gera o texto, narra, cria ou busca as imagens, edita o vídeo e agenda a publicação. <strong>Você configura, roda e acompanha.</strong>
                 </p>
 
                 <p class="section-label">Conteúdo</p>
@@ -408,29 +413,29 @@
                     <li>
                         <div class="module-num green">01</div>
                         <div class="module-text">
-                            <strong>Setup das ferramentas</strong>
-                            <span>Instalação e configuração de tudo que compõe o pipeline. Passo a passo. Se você sabe instalar um programa e seguir instrução, consegue fazer.</span>
+                            <strong>Pipeline Completo</strong>
+                            <span>Montar o pipeline que gera vídeo do Tema ao Título SOZINHA.</span>
                         </div>
                     </li>
                     <li>
                         <div class="module-num green">02</div>
                         <div class="module-text">
-                            <strong>Pipeline: texto → voz → imagem → vídeo</strong>
-                            <span>Como conectar cada etapa. A IA gera o roteiro, outra narra com voz realista, outra monta o visual, e no final sai o vídeo pronto.</span>
+                            <strong>100% Automático</strong>
+                            <span>IA faz texto, voz, imagem, decupagem e edição automaticamente, sem precisar de você.</span>
                         </div>
                     </li>
                     <li>
                         <div class="module-num green">03</div>
                         <div class="module-text">
-                            <strong>Publicação em massa</strong>
-                            <span>Agendar vídeos em vários canais de uma vez. Você programa a fila e os vídeos sobem sozinhos nos horários certos.</span>
+                            <strong>Escala Simultânea</strong>
+                            <span>Produzir vídeos simultaneamente. Em vez de focar num projeto por vez, gere escala.</span>
                         </div>
                     </li>
                     <li>
                         <div class="module-num green">04</div>
                         <div class="module-text">
-                            <strong>Manutenção de canais dark</strong>
-                            <span>Como manter canais automatizados funcionando a longo prazo. Evitar strikes, gerenciar perfis, manter monetização ativa.</span>
+                            <strong>Alimentar Múltiplos Canais</strong>
+                            <span>Aumentar a produção diária de forma drástica e alimentar múltiplos canais ao mesmo tempo.</span>
                         </div>
                     </li>
                 </ul>

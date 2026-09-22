@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bones Method</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-1: #3b82f6;
+            --accent-2: #8b5cf6;
+            --accent-gold: #fbbf24;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+
+        header { text-align: center; margin-bottom: 5rem; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(90deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #c4b5fd;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 640px; margin: 0 auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+
+        .card {
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px;
+            padding: 2.5rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden; backdrop-filter: blur(10px);
+            display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-10px); border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 20px 40px -10px rgba(139, 92, 246, 0.15); }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); opacity: 0; transition: opacity 0.3s ease; }
+        .card:hover::before { opacity: 1; }
+        .card.premium::before { background: linear-gradient(90deg, #fbbf24, #f59e0b); opacity: 1; }
+        .card.premium { border-color: rgba(251, 191, 36, 0.3); background: linear-gradient(180deg, rgba(251, 191, 36, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); }
+
+        .icon-wrapper { width: 60px; height: 60px; border-radius: 16px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
+
+        .card-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .card-focus { font-size: 0.9rem; color: var(--accent-1); font-weight: 600; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        .premium .card-focus { color: var(--accent-gold); }
+
+        .card-features { list-style: none; margin-bottom: 2rem; flex-grow: 1; }
+        .card-features li { margin-bottom: 1rem; color: var(--text-muted); display: flex; align-items: flex-start; font-size: 0.95rem; }
+        .card-features li::before { content: '✦'; color: var(--accent-2); margin-right: 10px; font-size: 1rem; flex-shrink: 0; }
+        .premium .card-features li::before { content: '★'; color: var(--accent-gold); }
+
+        .file-info { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; font-family: monospace; color: #84cc16; font-size: 0.85rem; margin-bottom: 1.5rem; border: 1px solid rgba(132, 204, 22, 0.2); display: flex; align-items: center; gap: 10px; }
+
+        .btn { display: block; width: 100%; padding: 1rem; text-align: center; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.4); }
+        .btn-premium { background: linear-gradient(90deg, #fbbf24, #f59e0b); color: #000; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3); }
+        .btn-premium:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4); }
+
+        /* MODAL */
+        .overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; padding: 2rem; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: #111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; max-width: 720px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(30px) scale(0.96); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .overlay.active .modal { transform: translateY(0) scale(1); }
+        .modal::-webkit-scrollbar { width: 6px; }
+        .modal::-webkit-scrollbar-track { background: transparent; }
+        .modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+        .modal-header { padding: 2.5rem 2.5rem 0 2.5rem; display: flex; align-items: flex-start; gap: 1.5rem; }
+        .modal-icon { width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; flex-shrink: 0; }
+        .modal-icon.blue { background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2)); border: 1px solid rgba(99,102,241,0.3); }
+        .modal-icon.purple { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2)); border: 1px solid rgba(139,92,246,0.3); }
+        .modal-icon.green { background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(59,130,246,0.2)); border: 1px solid rgba(16,185,129,0.3); }
+        .modal-icon.gold { background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.2)); border: 1px solid rgba(251,191,36,0.3); }
+
+        .modal-header-text h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .modal-header-text .tag { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.3rem 0.75rem; border-radius: 6px; margin-top: 0.5rem; }
+        .tag.blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+        .tag.purple { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+        .tag.green { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+        .tag.gold { background: rgba(251,191,36,0.15); color: #fcd34d; }
+
+        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .close-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .modal-body { padding: 2rem 2.5rem 2.5rem 2.5rem; }
+        .modal-desc { color: var(--text-muted); font-size: 1.05rem; line-height: 1.85; margin-bottom: 2rem; }
+        .modal-desc strong { color: #e2e8f0; }
+
+        .section-label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #64748b; margin-bottom: 1rem; }
+
+        .module-list { list-style: none; margin-bottom: 2rem; }
+        .module-list li { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 0.75rem; transition: background 0.2s; }
+        .module-list li:hover { background: rgba(255,255,255,0.04); }
+        .module-num { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+        .module-num.blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+        .module-num.purple { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+        .module-num.green { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+        .module-num.gold { background: rgba(251,191,36,0.15); color: #fcd34d; }
+        .module-text strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; }
+        .module-text span { color: var(--text-muted); font-size: 0.875rem; }
+
+        .divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 2rem 0; }
+
+        .result-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+        .result-box h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; color: #cbd5e1; }
+        .result-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+
+        .modal-footer-file { background: rgba(0,0,0,0.4); border: 1px solid rgba(132,204,22,0.2); border-radius: 12px; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-family: monospace; color: #84cc16; font-size: 0.9rem; }
+        .modal-footer-file.gold-file { border-color: rgba(251,191,36,0.3); color: #fbbf24; }
+
+        .file-info { display: none; }
+        .modal-footer-file { display: none; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 2rem 1rem; }
+            header { margin-bottom: 3rem; }
+            .subtitle { font-size: 1.05rem; }
+            .grid { grid-template-columns: 1fr; gap: 1.25rem; }
+            .card { padding: 1.75rem; border-radius: 18px; }
+            .card:hover { transform: none; }
+            .card-title { font-size: 1.3rem; }
+            .card-features li { font-size: 0.9rem; margin-bottom: 0.75rem; }
+            .btn { padding: 0.875rem; font-size: 0.95rem; }
+            .overlay { padding: 0.75rem; align-items: flex-end; }
+            .modal { border-radius: 22px 22px 0 0; max-height: 92vh; }
+            .modal-header { padding: 2rem 1.5rem 0 1.5rem; flex-direction: column; gap: 1rem; }
+            .modal-icon { width: 56px; height: 56px; font-size: 1.8rem; }
+            .modal-header-text h2 { font-size: 1.4rem; }
+            .modal-body { padding: 1.5rem; }
+            .modal-desc { font-size: 0.95rem; line-height: 1.75; }
+            .module-list li { padding: 0.85rem; }
+            .module-text strong { font-size: 0.9rem; }
+            .module-text span { font-size: 0.825rem; }
+            .result-box p { font-size: 0.9rem; }
+            .close-btn { top: 1rem; right: 1rem; width: 36px; height: 36px; font-size: 1.1rem; }
+        }
+
+        @media (max-width: 380px) {
+            h1 { font-size: 1.75rem; }
+            .badge { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+            .card { padding: 1.5rem; }
+            .card-title { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="badge">Módulos independentes</div>
+            <h1>Bones<br>Method</h1>
+            <p class="subtitle">São 3 frentes separadas. Compra só a que resolve o teu problema. Clica pra ver o que tem dentro.</p>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="icon-wrapper">🧠</div>
+                <h3 class="card-title">LLMs na Prática</h3>
+                <p class="card-focus">Usar IA direito</p>
+                <ul class="card-features">
+                    <li>Como pedir pra IA e ela entregar certo, sem 15 tentativas</li>
+                    <li>Montar agentes que fazem trabalho repetitivo por você</li>
+                    <li>Qual modelo usar pra quê (ChatGPT, Gemini, Claude)</li>
+                    <li>Automatizar emails, textos, análises, traduções</li>
+                </ul>
+                <div class="file-info">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                    ilha-llms.htmz
+                </div>
+                <button class="btn btn-outline" onclick="openModal('ilha1')">Abrir detalhes</button>
+            </div>
+
+            <div class="card">
+                <div class="icon-wrapper">🎯</div>
+                <h3 class="card-title">Tema, Título e Roteiro</h3>
+                <p class="card-focus">O que postar e como embalar</p>
+                <ul class="card-features">
+                    <li>Achar assunto com demanda real antes de produzir</li>
+                    <li>Montar títulos que geram clique sem ser clickbait</li>
+                    <li>Estruturar roteiro que segura a retenção até o fim</li>
+                    <li>Gerar pautas em lote com base em dados</li>
+                </ul>
+                <div class="file-info">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                    ilha-conteudo.htmz
+                </div>
+                <button class="btn btn-outline" onclick="openModal('ilha2')">Abrir detalhes</button>
+            </div>
+
+            <div class="card">
+                <div class="icon-wrapper">⚙️</div>
+                <h3 class="card-title">Automação de Vídeos</h3>
+                <p class="card-focus">A máquina que roda sozinha</p>
+                <ul class="card-features">
+                    <li>Montar o pipeline que gera vídeo sem você gravar nada</li>
+                    <li>IA faz texto, voz, imagem e edição automaticamente</li>
+                    <li>Agendar e publicar em massa em vários canais</li>
+                    <li>Manter canais dark vivos sem tomar strike</li>
+                </ul>
+                <div class="file-info">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                    ilha-automacao.htmz
+                </div>
+                <button class="btn btn-outline" onclick="openModal('ilha3')">Abrir detalhes</button>
+            </div>
+
+            <div class="card premium">
+                <div class="icon-wrapper" style="background: rgba(251, 191, 36, 0.1);">👑</div>
+                <h3 class="card-title">Pacote Completo</h3>
+                <p class="card-focus">As 3 ilhas + bônus</p>
+                <ul class="card-features">
+                    <li>Tudo junto, conectado num fluxo de ponta a ponta</li>
+                    <li>Bônus: monetização e leitura de métricas</li>
+                    <li>Da ideia até o canal publicando e gerando receita</li>
+                </ul>
+                <div class="file-info" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.3);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                    arquipelago-master.htmz
+                </div>
+                <button class="btn btn-premium" onclick="openModal('ilha4')">Abrir detalhes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ILHA 1 -->
+    <div class="overlay" id="ilha1" onclick="closeOnOverlay(event)">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('ilha1')">✕</button>
+            <div class="modal-header">
+                <div class="modal-icon blue">🧠</div>
+                <div class="modal-header-text">
+                    <h2>LLMs na Prática</h2>
+                    <span class="tag blue">Usar IA direito</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">
+                    A maioria das pessoas usa IA como um Google melhorado. Pede mal, recebe mal, e acha que "a IA não é tão boa assim". O problema não é a ferramenta. <strong>Esse módulo ensina a lógica por trás do prompt</strong> — como a IA processa o que você escreve e como estruturar o pedido pra sair do jeito certo. Também mostra como criar agentes persistentes que fazem trabalho operacional repetitivo por você, todo dia, no seu padrão.
+                </p>
+
+                <p class="section-label">Conteúdo</p>
+                <ul class="module-list">
+                    <li>
+                        <div class="module-num blue">01</div>
+                        <div class="module-text">
+                            <strong>Qual modelo usar e quando</strong>
+                            <span>ChatGPT, Gemini, Claude — cada um tem um ponto forte. Você aprende qual usar pra cada tipo de tarefa em vez de jogar tudo no mesmo.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num blue">02</div>
+                        <div class="module-text">
+                            <strong>Estrutura de prompt que funciona</strong>
+                            <span>Não é "dica de prompt". É entender como a IA lê o que você escreve e como montar a instrução pra ela não inventar, não enrolar e não errar.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num blue">03</div>
+                        <div class="module-text">
+                            <strong>Agentes e personas</strong>
+                            <span>Criar assistentes com memória, personalidade e padrão definido. Eles mantêm contexto, seguem regras e executam tarefas repetitivas por você.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num blue">04</div>
+                        <div class="module-text">
+                            <strong>Automação de tarefas do dia a dia</strong>
+                            <span>Emails, relatórios, resumos, análises, traduções. Tudo que te come tempo e que a IA resolve em segundos quando bem instruída.</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <hr class="divider">
+
+                <div class="result-box">
+                    <h4>Na prática</h4>
+                    <p>Você para de perder tempo tentando fazer a IA funcionar e começa a usar ela de verdade. Ganha horas por semana em tarefas que hoje faz no braço ou faz mal com IA por não saber pedir.</p>
+                </div>
+
+                <div class="modal-footer-file">
+                    <span>📦 ilha-llms.htmz</span>
+                    <span>Percurso 3D</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ILHA 2 -->
+    <div class="overlay" id="ilha2" onclick="closeOnOverlay(event)">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('ilha2')">✕</button>
+            <div class="modal-header">
+                <div class="modal-icon purple">🎯</div>
+                <div class="modal-header-text">
+                    <h2>Tema, Título e Roteiro</h2>
+                    <span class="tag purple">O que postar e como embalar</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">
+                    A maioria dos canais morre no empacotamento. O vídeo pode até ser bom, mas se o tema não tem busca, o título não gera clique e o roteiro não segura atenção, ninguém vai assistir. <strong>Esse módulo é sobre pesquisa e estrutura</strong> — como escolher o que produzir usando dados, como montar um título que funciona sem apelação, e como escrever um roteiro que o algoritmo distribui porque as pessoas ficam até o final.
+                </p>
+
+                <p class="section-label">Conteúdo</p>
+                <ul class="module-list">
+                    <li>
+                        <div class="module-num purple">01</div>
+                        <div class="module-text">
+                            <strong>Pesquisa de demanda</strong>
+                            <span>Como encontrar assuntos que já têm gente procurando. Ferramentas, filtros e critérios pra validar um tema antes de gastar tempo produzindo.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num purple">02</div>
+                        <div class="module-text">
+                            <strong>Títulos que geram clique</strong>
+                            <span>A lógica de um bom título: o que faz alguém parar o scroll e clicar. Padrões que funcionam, o que evitar, como testar.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num purple">03</div>
+                        <div class="module-text">
+                            <strong>Hooks e retenção</strong>
+                            <span>A abertura define se o vídeo vai ser entregue ou enterrado. Como estruturar os primeiros 30 segundos e manter a retenção alta no corpo do vídeo.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num purple">04</div>
+                        <div class="module-text">
+                            <strong>Produção de pautas em lote</strong>
+                            <span>Sistema pra gerar dezenas de pautas validadas de uma vez. Você nunca mais trava por falta de ideia — o problema vira escolher qual fazer primeiro.</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <hr class="divider">
+
+                <div class="result-box">
+                    <h4>Na prática</h4>
+                    <p>Você para de postar no escuro e começa a publicar conteúdo que tem demanda comprovada, com empacotamento que gera clique e retenção. Menos vídeo jogado fora, mais resultado por vídeo publicado.</p>
+                </div>
+
+                <div class="modal-footer-file">
+                    <span>📦 ilha-conteudo.htmz</span>
+                    <span>Percurso 3D</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ILHA 3 -->
+    <div class="overlay" id="ilha3" onclick="closeOnOverlay(event)">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('ilha3')">✕</button>
+            <div class="modal-header">
+                <div class="modal-icon green">⚙️</div>
+                <div class="modal-header-text">
+                    <h2>Automação de Vídeos</h2>
+                    <span class="tag green">Pipeline técnico</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">
+                    Esse é o módulo técnico. Aqui você monta a esteira que faz tudo sozinha: a IA gera o texto, narra, cria ou busca as imagens, edita o vídeo e agenda a publicação. <strong>Você configura, roda e acompanha.</strong> Não precisa ser programador, mas precisa ter disposição pra seguir o setup e entender como as peças se encaixam. O objetivo é tirar você da operação manual.
+                </p>
+
+                <p class="section-label">Conteúdo</p>
+                <ul class="module-list">
+                    <li>
+                        <div class="module-num green">01</div>
+                        <div class="module-text">
+                            <strong>Setup das ferramentas</strong>
+                            <span>Instalação e configuração de tudo que compõe o pipeline. Passo a passo. Se você sabe instalar um programa e seguir instrução, consegue fazer.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num green">02</div>
+                        <div class="module-text">
+                            <strong>Pipeline: texto → voz → imagem → vídeo</strong>
+                            <span>Como conectar cada etapa. A IA gera o roteiro, outra narra com voz realista, outra monta o visual, e no final sai o vídeo pronto.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num green">03</div>
+                        <div class="module-text">
+                            <strong>Publicação em massa</strong>
+                            <span>Agendar vídeos em vários canais de uma vez. Você programa a fila e os vídeos sobem sozinhos nos horários certos.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num green">04</div>
+                        <div class="module-text">
+                            <strong>Manutenção de canais dark</strong>
+                            <span>Como manter canais automatizados funcionando a longo prazo. Evitar strikes, gerenciar perfis, manter monetização ativa.</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <hr class="divider">
+
+                <div class="result-box">
+                    <h4>Na prática</h4>
+                    <p>Você sai daqui com canais publicando todos os dias sem você gravar, editar ou postar nada manualmente. O seu trabalho passa a ser acompanhar os números e decidir o que ajustar.</p>
+                </div>
+
+                <div class="modal-footer-file">
+                    <span>📦 ilha-automacao.htmz</span>
+                    <span>Percurso 3D</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ILHA 4 -->
+    <div class="overlay" id="ilha4" onclick="closeOnOverlay(event)">
+        <div class="modal" style="border-color: rgba(251,191,36,0.2);">
+            <button class="close-btn" onclick="closeModal('ilha4')">✕</button>
+            <div class="modal-header">
+                <div class="modal-icon gold">👑</div>
+                <div class="modal-header-text">
+                    <h2>Pacote Completo</h2>
+                    <span class="tag gold">Tudo junto + bônus</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">
+                    As 3 ilhas juntas num fluxo contínuo, mais dois módulos extras que não vendem separado. <strong>É pra quem quer montar a operação inteira</strong> — entender IA, saber o que postar, e ter a máquina rodando. Em vez de comprar por partes e montar sozinho, aqui já vem tudo na ordem certa.
+                </p>
+
+                <p class="section-label">O que vem dentro</p>
+                <ul class="module-list">
+                    <li>
+                        <div class="module-num gold">🧠</div>
+                        <div class="module-text">
+                            <strong>LLMs na Prática (Ilha completa)</strong>
+                            <span>Prompt, agentes, automação de texto — a base.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num gold">🎯</div>
+                        <div class="module-text">
+                            <strong>Tema, Título e Roteiro (Ilha completa)</strong>
+                            <span>Pesquisa, empacotamento e roteirização.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num gold">⚙️</div>
+                        <div class="module-text">
+                            <strong>Automação de Vídeos (Ilha completa)</strong>
+                            <span>Pipeline, publicação, canais dark.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num gold">📊</div>
+                        <div class="module-text">
+                            <strong>Bônus: Métricas e Monetização</strong>
+                            <span>Quais números olhar, o que significam, como otimizar RPM e transformar views em receita de verdade.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="module-num gold">🗺️</div>
+                        <div class="module-text">
+                            <strong>Bônus: Fluxo Mestre</strong>
+                            <span>Um percurso que conecta tudo na ordem: da primeira ideia até o canal rodando no automático.</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <hr class="divider">
+
+                <div class="result-box">
+                    <h4>Na prática</h4>
+                    <p>Você monta a operação inteira de uma vez. É a mesma estrutura que eu uso nos meus canais — só que documentada passo a passo pra você replicar.</p>
+                </div>
+
+                <div class="modal-footer-file gold-file">
+                    <span>📦 arquipelago-master.htmz</span>
+                    <span>Percurso 3D Completo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+        function closeOnOverlay(e) { if (e.target === e.currentTarget) { e.target.classList.remove('active'); document.body.style.overflow = ''; } }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { document.querySelectorAll('.overlay.active').forEach(function(el) { el.classList.remove('active'); }); document.body.style.overflow = ''; } });
+    </script>
+
+</body>
+</html>

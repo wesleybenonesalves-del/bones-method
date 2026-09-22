@@ -73,7 +73,8 @@
         .card.premium::before { background: linear-gradient(90deg, #fbbf24, #f59e0b); opacity: 1; }
         .card.premium { border-color: rgba(251, 191, 36, 0.3); background: linear-gradient(180deg, rgba(251, 191, 36, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); }
 
-        .icon-wrapper { width: 60px; height: 60px; border-radius: 16px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
+        .icon-wrapper { width: 60px; height: 60px; border-radius: 16px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
+        .icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
         .card-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
         .card-focus { font-size: 0.9rem; color: var(--accent-1); font-weight: 600; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -191,7 +192,7 @@
 
         <div class="grid">
             <div class="card">
-                <div class="icon-wrapper">🧠</div>
+                <div class="icon-wrapper"><img src="llms.jpg" alt="LLMs"></div>
                 <h3 class="card-title">LLMs na Prática</h3>
                 <p class="card-focus">Usar IA direito</p>
                 <ul class="card-features">
@@ -208,7 +209,7 @@
             </div>
 
             <div class="card">
-                <div class="icon-wrapper">🎯</div>
+                <div class="icon-wrapper"><img src="nexlev.jpg" alt="Conteúdo"></div>
                 <h3 class="card-title">Tema, Título e Roteiro</h3>
                 <p class="card-focus">O que postar e como embalar</p>
                 <ul class="card-features">
@@ -225,7 +226,7 @@
             </div>
 
             <div class="card">
-                <div class="icon-wrapper">⚙️</div>
+                <div class="icon-wrapper"><img src="automacao.jpg" alt="Automação"></div>
                 <h3 class="card-title">Automação de Vídeos</h3>
                 <p class="card-focus">A máquina que roda sozinha</p>
                 <ul class="card-features">
@@ -264,7 +265,7 @@
         <div class="modal">
             <button class="close-btn" onclick="closeModal('ilha1')">✕</button>
             <div class="modal-header">
-                <div class="modal-icon blue">🧠</div>
+                <div class="modal-icon blue" style="overflow:hidden"><img src="llms.jpg" alt="LLMs" style="width:100%;height:100%;object-fit:cover"></div>
                 <div class="modal-header-text">
                     <h2>LLMs na Prática</h2>
                     <span class="tag blue">Usar IA direito</span>
@@ -327,7 +328,7 @@
         <div class="modal">
             <button class="close-btn" onclick="closeModal('ilha2')">✕</button>
             <div class="modal-header">
-                <div class="modal-icon purple">🎯</div>
+                <div class="modal-icon purple" style="overflow:hidden"><img src="nexlev.jpg" alt="Conteúdo" style="width:100%;height:100%;object-fit:cover"></div>
                 <div class="modal-header-text">
                     <h2>Tema, Título e Roteiro</h2>
                     <span class="tag purple">O que postar e como embalar</span>
@@ -390,7 +391,7 @@
         <div class="modal">
             <button class="close-btn" onclick="closeModal('ilha3')">✕</button>
             <div class="modal-header">
-                <div class="modal-icon green">⚙️</div>
+                <div class="modal-icon green" style="overflow:hidden"><img src="automacao.jpg" alt="Automação" style="width:100%;height:100%;object-fit:cover"></div>
                 <div class="modal-header-text">
                     <h2>Automação de Vídeos</h2>
                     <span class="tag green">Pipeline técnico</span>

@@ -208,41 +208,20 @@
 
     <div class="container">
         <header style="position: relative; z-index: 1;">
-            <!-- SVG Iceberg Background -->
-            <div class="iceberg-bg" style="position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 800px; height: 600px; z-index: -1; pointer-events: none; opacity: 0.6;">
-                <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="iceTop" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
-                            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.2"/>
-                        </linearGradient>
-                        <linearGradient id="iceBot" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
-                            <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
-                        </linearGradient>
-                        <linearGradient id="waterLine" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0"/>
-                            <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.6"/>
-                            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
-                        </linearGradient>
-                    </defs>
-                    
-                    <!-- Water line -->
-                    <rect x="100" y="280" width="600" height="2" fill="url(#waterLine)" />
-                    
-                    <!-- Tip of the iceberg (visible) -->
-                    <path d="M400 80 L470 280 L310 280 Z" fill="url(#iceTop)" />
-                    <path d="M400 80 L470 280 L400 280 Z" fill="#ffffff" opacity="0.3"/>
-                    
-                    <!-- Deep iceberg (underwater) -->
-                    <path d="M310 280 L470 280 L620 520 L400 580 L200 490 Z" fill="url(#iceBot)" />
-                    <path d="M400 280 L470 280 L620 520 L400 580 Z" fill="#3b82f6" opacity="0.05"/>
-                </svg>
-            </div>
+            <!-- Deep Ocean Glow -->
+            <div style="position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 1000px; height: 800px; background: radial-gradient(ellipse at top, rgba(14, 165, 233, 0.12) 0%, rgba(11, 15, 25, 0) 70%); z-index: -1; pointer-events: none;"></div>
 
-            <div class="badge" style="background: linear-gradient(90deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05)); border-color: rgba(59,130,246,0.4); color: #60a5fa; box-shadow: 0 0 15px rgba(59,130,246,0.1);">O Iceberg de Habilidades</div>
-            <h1 style="text-shadow: 0 10px 30px rgba(0,0,0,0.5);">Bones<br>Method</h1>
-            <p class="subtitle">Esqueça as aulinhas teóricas gravadas. Isso aqui é um arsenal prático. <strong style="color: #fff; font-weight: 600;">Você escolhe a profundidade que quer alcançar, eu te guio até o seu objetivo.</strong> Escolha a frente de ataque que resolve o seu problema abaixo.</p>
+            <!-- Badge -->
+            <div style="display: inline-block; padding: 0.6rem 1.5rem; background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 50px; color: #38bdf8; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; box-shadow: 0 0 30px rgba(14, 165, 233, 0.15);">
+                O Iceberg de Habilidades
+            </div>
+            
+            <h1 style="text-shadow: 0 10px 30px rgba(0,0,0,0.8);">Bones<br>Method</h1>
+            
+            <p class="subtitle" style="font-size: 1.15rem;">
+                <strong style="color: #fff; font-weight: 500;">Você escolhe a profundidade que quer alcançar, eu te guio até o seu objetivo.</strong><br>
+                <span style="color: #94a3b8; display: block; margin-top: 0.5rem; font-size: 1rem;">Escolha a frente de ataque que resolve o seu problema abaixo.</span>
+            </p>
         </header>
 
         <div class="grid">

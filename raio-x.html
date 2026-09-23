@@ -220,7 +220,8 @@
 (function(){
   "use strict";
 
-  var WHATSAPP_NUMERO = "5519983265221";
+  // URL da Web App do Google Apps Script (veja instruções que te mandei) — troca aqui quando tiver a sua
+  var SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxe2ZloF4c_r7UQ4VQW8Kg7YGwxhgm40GNZB276-0S1OYkLTfPff1aHixKbSaFwgX81/exec";
   var PRECO_AULA = 250;
 
   var CATS = [
@@ -375,23 +376,30 @@
     return d.innerHTML;
   }
 
-  function buildWhatsAppLink(nome, contato, cs, overall, aulas, valor, interesseLabel){
-    var linhas = [];
-    linhas.push("📊 *Raio-X do Operador*");
-    linhas.push("");
-    linhas.push("Nome: " + nome);
-    linhas.push("Contato: " + contato);
-    linhas.push("");
-    linhas.push("Nível geral: " + overall + "%");
-    VISIBLE_CATS.forEach(function(c){
-      linhas.push(c.icon + " " + c.label + ": " + cs[c.key] + "%");
-    });
-    linhas.push("💰 Investimento em ferramentas: " + cs.investimento + "% (uso interno)");
-    linhas.push("");
-    linhas.push("Interesse: " + (interesseLabel || "não informado"));
-    linhas.push("Aulas recomendadas: " + aulas + " (~R$ " + valor.toLocaleString("pt-BR") + ")");
-    var texto = linhas.join("\n");
-    return "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(texto);
+  function enviarParaPlanilha(nome, contato, cs, overall, aulas, valor, interesseLabel){
+    if(!SHEET_WEBHOOK_URL || SHEET_WEBHOOK_URL.indexOf("COLOQUE_AQUI") === 0){ return; }
+    var payload = {
+      nome: nome,
+      contato: contato,
+      overall: overall,
+      producao: cs.producao,
+      ia: cs.ia,
+      autonomia: cs.autonomia,
+      estrategia: cs.estrategia,
+      investimento: cs.investimento,
+      interesseLabel: interesseLabel || "não informado",
+      aulasRecomendadas: aulas,
+      valorEstimado: valor
+    };
+    // mode:no-cors -> disparo silencioso, sem abrir nada nem depender de resposta
+    try{
+      fetch(SHEET_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {"Content-Type": "text/plain;charset=utf-8"},
+        body: JSON.stringify(payload)
+      }).catch(function(){});
+    }catch(e){}
   }
 
   var LETTERS = ["A","B","C","D"];

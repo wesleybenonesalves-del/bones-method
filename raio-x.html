@@ -88,10 +88,6 @@
   }
   .btn-gradient:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(139,92,246,.4);}
   .btn-gradient:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
-  .btn-whatsapp{
-    background:#25D366;color:#fff;border:1px solid #1ebe58;font-size:1.05rem;margin-top:8px;
-  }
-  .btn-whatsapp:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(37,211,102,.35);}
   .btn:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;}
 
   /* ---- progress ---- */
@@ -501,16 +497,13 @@
         }
 
         if(i === FLOW.length-1){
-          // última pergunta: dispara o WhatsApp na hora (ainda dentro do gesto de clique,
-          // pra não ser bloqueado como pop-up) e mostra só a confirmação pro cliente
+          // última pergunta: envia em silêncio pra planilha e mostra só a confirmação pro cliente
           var cs = catScores(state.answers);
           var overall = overallScore(cs);
           var aulas = aulasRecomendadas(overall);
           var valor = aulas * PRECO_AULA;
           var interesseLabel = INTERESSE_LABELS[state.interesse] || null;
-          var waLink = buildWhatsAppLink(state.nome, state.contato, cs, overall, aulas, valor, interesseLabel);
-          state.waLink = waLink;
-          window.open(waLink, "_blank", "noopener");
+          enviarParaPlanilha(state.nome, state.contato, cs, overall, aulas, valor, interesseLabel);
           state.step = FLOW.length;
           render();
           return;
@@ -533,7 +526,6 @@
         '<div class="check-badge">✓</div>' +
         '<h2 style="font-size:1.4rem;font-weight:700;text-align:center;">Resposta enviada</h2>' +
         '<p style="color:var(--text-muted);text-align:center;max-width:36ch;">Valeu, '+esc(primeiroNome)+'! Recebi seu diagnóstico. Em breve entro em contato com seu retorno.</p>' +
-        '<a href="'+esc(state.waLink||"#")+'" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12.5px;text-decoration:underline;margin-top:6px;">Não abriu o WhatsApp? toca aqui</a>' +
       '</div>';
   }
 

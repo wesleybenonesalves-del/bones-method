@@ -338,7 +338,21 @@
     ]
   };
 
-  var FLOW = QUESTIONS.concat([INTENT_QUESTION]);
+  var QUESTION_IDS = ['frequencia','tempo','ia','api','validacao','pesquisa','canais','investimento'];
+  QUESTIONS.forEach(function(q,i){q.id=QUESTION_IDS[i];});
+  var PRACTICE_QUESTION={id:'pratica',cat:'autonomia',text:'Com IA, você consegue ler arquivos, executar uma tarefa e conferir o resultado?',options:[
+    {label:'Ainda não fiz isso',score:10},
+    {label:'Consigo seguindo um passo a passo, com ajuda',score:40},
+    {label:'Faço sozinho e confiro os arquivos gerados',score:70},
+    {label:'Uso um processo ou skill reutilizável e corrijo falhas',score:100}
+  ]};
+  var BOTTLENECK_QUESTION={cat:'interesse',id:'gargalo',scored:false,text:'O que mais trava sua produção hoje?',options:[
+    {label:'Operar IA e automatizar tarefas',value:'ia'},
+    {label:'Escolher nicho, temas e embalagem',value:'estrategia'},
+    {label:'Produzir roteiro, voz, imagens e edição',value:'producao'},
+    {label:'Organizar o processo e ganhar tempo',value:'processo'}
+  ]};
+  var FLOW = QUESTIONS.concat([PRACTICE_QUESTION,BOTTLENECK_QUESTION,INTENT_QUESTION]);
 
   function aulasRecomendadas(score){
     if(score < 25) return 7;
@@ -385,7 +399,12 @@
       investimento: cs.investimento,
       interesseLabel: interesseLabel || "não informado",
       aulasRecomendadas: aulas,
-      valorEstimado: valor
+      valorEstimado: valor,
+      versao: 'v2',
+      respostas: QUESTIONS.concat([PRACTICE_QUESTION]).map(function(q,i){
+        var option=q.options.filter(function(o){return o.score===state.answers[i];})[0];
+        return {id:q.id,pergunta:q.text,resposta:option?option.label:'Não respondido',pontos:option?option.score:null};
+      }).concat([{id:'gargalo',pergunta:BOTTLENECK_QUESTION.text,resposta:(BOTTLENECK_QUESTION.options.filter(function(o){return o.value===state.gargalo;})[0]||{}).label||'Não informado',pontos:null},{id:'interesse',pergunta:INTENT_QUESTION.text,resposta:interesseLabel||'Não informado',pontos:null}])
     };
     // mode:no-cors -> disparo silencioso, sem abrir nada nem depender de resposta
     try{
@@ -405,6 +424,7 @@
     nome: "",
     contato: "",
     answers: new Array(QUESTIONS.length).fill(null),
+    gargalo: null,
     interesse: null
   };
 
@@ -457,7 +477,7 @@
     var optsHtml = q.options.map(function(o,oi){
       var selected;
       if(isScored){ selected = state.answers[i]===o.score ? " selected" : ""; }
-      else { selected = state.interesse===o.value ? " selected" : ""; }
+      else { selected = state[q.id==='gargalo'?'gargalo':'interesse']===o.value ? " selected" : ""; }
       var dataAttr = isScored ? ('data-score="'+o.score+'"') : ('data-value="'+esc(o.value)+'"');
       return '<button type="button" class="opt '+cat.color+selected+'" '+dataAttr+'>' +
         '<span class="opt-mark">'+LETTERS[oi]+'</span><span>'+esc(o.label)+'</span></button>';
@@ -493,7 +513,7 @@
         if(isScored){
           state.answers[i] = parseInt(btn.getAttribute("data-score"),10);
         } else {
-          state.interesse = btn.getAttribute("data-value");
+          state[q.id==='gargalo'?'gargalo':'interesse'] = btn.getAttribute("data-value");
         }
 
         if(i === FLOW.length-1){

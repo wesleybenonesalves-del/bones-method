@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Raio-X do Operador | Bones Method</title>
+<meta name="description" content="Descubra em que nível está sua operação de vídeo com IA — e o quanto dá pra destravar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0f19;
+    --card-bg:rgba(255,255,255,.03);
+    --card-border:rgba(255,255,255,.08);
+    --text-main:#f8fafc;
+    --text-muted:#94a3b8;
+    --accent-1:#3b82f6;
+    --accent-2:#8b5cf6;
+    --gold:#fbbf24;
+    --gold-soft:rgba(251,191,36,.12);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+
+  html,body{background-color:var(--bg);}
+
+  body{
+    color:var(--text-main);
+    line-height:1.6;
+    background-image:
+      radial-gradient(circle at 15% 15%, rgba(59,130,246,.14) 0%, transparent 55%),
+      radial-gradient(circle at 90% 25%, rgba(139,92,246,.12) 0%, transparent 50%);
+    padding-inline:16px;
+    padding-block:40px;
+    min-height:100vh;
+  }
+
+  #app{max-width:620px;margin:0 auto;position:relative;}
+  .mono{font-family:ui-monospace,'SF Mono',monospace;}
+
+  /* ---- hero (intro) ---- */
+  .hero{position:relative;padding-top:8px;margin-bottom:2.5rem;}
+  .hero-glow{
+    position:absolute;top:-160px;left:50%;transform:translateX(-50%);
+    width:900px;height:700px;max-width:none;
+    background:radial-gradient(circle at top, rgba(14,165,233,.18) 0%, rgba(11,15,25,0) 70%);
+    z-index:-1;pointer-events:none;
+  }
+  .eyebrow{
+    font-size:.85rem;font-weight:800;color:#64748b;text-transform:uppercase;
+    letter-spacing:4px;margin-bottom:1.25rem;
+  }
+  h1.giant{
+    font-size:clamp(2.4rem,8vw,3.6rem);
+    font-weight:900;line-height:1.06;letter-spacing:-1px;
+    margin-bottom:1.5rem;
+    background:linear-gradient(180deg,#ffffff 0%,#38bdf8 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    text-shadow:0 20px 40px rgba(56,189,248,.2);
+  }
+  p.subtitle{font-size:1.05rem;max-width:46ch;}
+  p.subtitle strong{color:#fff;font-weight:500;}
+  p.subtitle span{color:var(--text-muted);display:block;margin-top:.7rem;font-size:.95rem;}
+
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-size:.72rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:1.5px;color:var(--text-muted);margin-bottom:8px;
+  }
+  .field input{
+    width:100%;background:rgba(255,255,255,.03);border:1px solid var(--card-border);
+    color:var(--text-main);font-size:16px;padding:14px 16px;border-radius:12px;
+    outline:none;transition:border-color .2s ease;
+  }
+  .field input::placeholder{color:#5b6478;}
+  .field input:focus{border-color:var(--accent-2);}
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;padding:1rem;text-align:center;text-decoration:none;
+    border-radius:12px;font-weight:600;font-size:1rem;border:none;cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  }
+  .btn-gradient{
+    background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    color:#fff;box-shadow:0 4px 15px rgba(139,92,246,.3);margin-top:8px;
+  }
+  .btn-gradient:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(139,92,246,.4);}
+  .btn-gradient:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+  .btn-whatsapp{
+    background:#25D366;color:#fff;border:1px solid #1ebe58;font-size:1.05rem;margin-top:8px;
+  }
+  .btn-whatsapp:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(37,211,102,.35);}
+  .btn:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;}
+
+  /* ---- progress ---- */
+  .progress-row{display:flex;align-items:center;gap:12px;margin-bottom:26px;}
+  .progress-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+  .progress-fill{
+    width:100%;height:100%;border-radius:3px;
+    background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    transform-origin:left;transform:scaleX(0);
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  .progress-label{font-size:.72rem;color:var(--text-muted);white-space:nowrap;letter-spacing:.5px;}
+
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;background:none;border:none;
+    color:var(--text-muted);font-size:.8rem;cursor:pointer;padding:0;margin-bottom:22px;
+    transition:color .2s ease;
+  }
+  .back-link:hover{color:var(--text-main);}
+
+  /* ---- question header ---- */
+  .q-header{display:flex;align-items:flex-start;gap:1.1rem;margin-bottom:1.6rem;}
+  .q-icon{
+    width:56px;height:56px;min-width:56px;border-radius:16px;display:flex;
+    align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;
+  }
+  .q-icon.blue{background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(139,92,246,.2));border:1px solid rgba(99,102,241,.3);}
+  .q-icon.purple{background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(236,72,153,.2));border:1px solid rgba(139,92,246,.3);}
+  .q-icon.green{background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(59,130,246,.2));border:1px solid rgba(16,185,129,.3);}
+  .q-icon.gold{background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(245,158,11,.2));border:1px solid rgba(251,191,36,.3);}
+
+  .tag{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:.3rem .7rem;border-radius:6px;margin-bottom:.6rem;}
+  .tag.blue{background:rgba(59,130,246,.15);color:#93c5fd;}
+  .tag.purple{background:rgba(139,92,246,.15);color:#c4b5fd;}
+  .tag.green{background:rgba(16,185,129,.15);color:#6ee7b7;}
+  .tag.gold{background:rgba(251,191,36,.15);color:#fcd34d;}
+
+  h2.question{font-size:clamp(19px,5vw,23px);font-weight:700;line-height:1.34;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    display:flex;align-items:center;gap:14px;text-align:left;
+    background:var(--card-bg);border:1px solid var(--card-border);color:var(--text-main);
+    font-size:15px;line-height:1.42;padding:14px 16px;border-radius:14px;cursor:pointer;
+    transition:border-color .25s ease, background .25s ease, transform .2s ease;
+  }
+  .opt:hover{transform:translateY(-2px);}
+  .opt .opt-mark{
+    width:26px;height:26px;min-width:26px;border-radius:8px;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;font-weight:700;color:var(--text-muted);
+  }
+  .opt.blue:hover{border-color:rgba(99,102,241,.5);box-shadow:0 10px 24px -10px rgba(59,130,246,.25);}
+  .opt.purple:hover{border-color:rgba(139,92,246,.5);box-shadow:0 10px 24px -10px rgba(139,92,246,.25);}
+  .opt.green:hover{border-color:rgba(16,185,129,.5);box-shadow:0 10px 24px -10px rgba(16,185,129,.25);}
+  .opt.gold:hover{border-color:rgba(251,191,36,.5);box-shadow:0 10px 24px -10px rgba(251,191,36,.25);}
+  .opt.blue.selected{border-color:#93c5fd;background:rgba(59,130,246,.1);}
+  .opt.purple.selected{border-color:#c4b5fd;background:rgba(139,92,246,.1);}
+  .opt.green.selected{border-color:#6ee7b7;background:rgba(16,185,129,.1);}
+  .opt.gold.selected{border-color:#fcd34d;background:rgba(251,191,36,.1);}
+  .opt.selected .opt-mark{color:#fff;background:rgba(255,255,255,.12);}
+  .opt:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;}
+
+  .loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:18px;}
+  .spinner{width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,.08);border-top-color:var(--accent-2);animation:spin .8s linear infinite;}
+  @media (prefers-reduced-motion: reduce){.spinner{animation-duration:2s;}}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .loading-wrap p{color:var(--text-muted);font-size:13px;}
+
+  /* ---- result ---- */
+  .result-header{display:flex;align-items:center;gap:1.4rem;margin-bottom:1.8rem;}
+  .score-circle{
+    width:96px;height:96px;min-width:96px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(251,191,36,.2));
+    border:1px solid rgba(251,191,36,.3);
+    font-size:1.7rem;font-weight:900;color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .result-header-text h2{font-size:1.3rem;font-weight:700;line-height:1.4;}
+
+  .section-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#64748b;margin:1.8rem 0 1rem;}
+
+  .module-list{list-style:none;}
+  .module-list li{
+    display:flex;align-items:flex-start;gap:1rem;padding:1rem;border-radius:14px;
+    background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);margin-bottom:.75rem;
+  }
+  .module-num{width:44px;height:44px;min-width:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;}
+  .module-num.blue{background:rgba(59,130,246,.15);color:#93c5fd;}
+  .module-num.purple{background:rgba(139,92,246,.15);color:#c4b5fd;}
+  .module-num.green{background:rgba(16,185,129,.15);color:#6ee7b7;}
+  .module-num.gold{background:rgba(251,191,36,.15);color:#fcd34d;}
+  .module-text{flex:1;min-width:0;}
+  .module-text strong{display:block;font-size:.95rem;margin-bottom:.3rem;}
+  .cat-desc{color:var(--text-muted);font-size:.8rem;line-height:1.5;margin-bottom:.6rem;}
+  .module-bar-track{position:relative;height:8px;border-radius:4px;background:var(--gold-soft);overflow:hidden;margin-top:.15rem;}
+  .module-bar-fill{position:absolute;inset:0 auto 0 0;border-radius:4px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));}
+  .module-text span{color:var(--text-muted);font-size:.8rem;display:block;margin-top:.4rem;}
+  .module-text span .gold{color:var(--gold);font-weight:600;}
+
+  .divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin:1.8rem 0;}
+
+  .result-box{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.25rem 1.5rem;}
+  .result-box.gold{background:var(--gold-soft);border-color:rgba(251,191,36,.25);}
+  .result-box h4{font-size:.85rem;font-weight:700;margin-bottom:.6rem;color:#cbd5e1;}
+  .result-box p{color:var(--text-muted);font-size:.92rem;line-height:1.65;}
+
+  @media (max-width:480px){
+    .hero-glow{width:600px;height:500px;top:-120px;}
+    .result-header{gap:1rem;}
+    .score-circle{width:76px;height:76px;min-width:76px;font-size:1.4rem;border-radius:18px;}
+    .q-icon{width:48px;height:48px;min-width:48px;border-radius:14px;font-size:1.4rem;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var WHATSAPP_NUMERO = "5519983265221";
+  var PRECO_AULA = 250;
+
+  var CATS = [
+    {key:"producao", label:"Ritmo de Produção", color:"blue", icon:"🎬",
+      desc:"Quantos vídeos você entrega e em quanto tempo, do zero até publicado."},
+    {key:"ia", label:"Uso Real de IA", color:"purple", icon:"🤖",
+      desc:"Da conversa simples no chat até rodar agentes que trabalham sozinhos por você."},
+    {key:"autonomia", label:"Autonomia Técnica", color:"green", icon:"⚙️",
+      desc:"Se você depende de alguém pra manter e evoluir sua operação, ou resolve sozinho."},
+    {key:"estrategia", label:"Direção Estratégica", color:"blue", icon:"🎯",
+      desc:"Se as decisões de canal, tema e título vêm de dado real ou de chute."},
+    {key:"investimento", label:"Investimento em Ferramentas", color:"gold", icon:"💰", hidden:true}
+  ];
+  var VISIBLE_CATS = CATS.filter(function(c){ return !c.hidden; });
+  function catOf(key){
+    if(key === INTENT_QUESTION.cat) return INTENT_META;
+    return CATS.filter(function(c){return c.key===key;})[0];
+  }
+  var INTENT_META = {key:"interesse", label:"Próximo passo", color:"gold", icon:"🧭"};
+
+  var INTERESSE_LABELS = {
+    automacao:"Quer comprar a automação pronta",
+    curso:"Quer aprender (curso/mentoria)",
+    indefinido:"Ainda não decidiu"
+  };
+
+  var QUESTIONS = [
+    {
+      cat:"producao",
+      text:"Quantos vídeos você consegue publicar por semana, hoje?",
+      options:[
+        {label:"1 ou 2 por semana, quando dá tempo", score:10},
+        {label:"2 a 5 por semana, no sufoco", score:35},
+        {label:"5 a 10 por semana, de forma consistente", score:65},
+        {label:"3 ou mais por dia, tranquilo", score:100}
+      ]
+    },
+    {
+      cat:"producao",
+      text:"Do zero até publicado, quanto tempo leva pra você editar UM vídeo?",
+      options:[
+        {label:"Mais de 3 dias", score:10},
+        {label:"1 a 2 dias inteiros", score:40},
+        {label:"Algumas horas", score:70},
+        {label:"Menos de 1 hora", score:100}
+      ]
+    },
+    {
+      cat:"ia",
+      text:"Como você usa IA (Claude, ChatGPT, etc.) no seu processo hoje?",
+      options:[
+        {label:"Faço tudo pelo chat no navegador mesmo", score:10},
+        {label:"Uso o chat/cowork pelo app desktop", score:35},
+        {label:"Já uso Claude Code / GPT Codex ou similar", score:65},
+        {label:"Rodo tudo no terminal, gerencio múltiplos agentes ao mesmo tempo", score:100}
+      ]
+    },
+    {
+      cat:"autonomia",
+      text:"Você sabe o que é uma API?",
+      options:[
+        {label:"Não, nunca ouvi falar", score:10},
+        {label:"Já ouvi falar mas não sei explicar", score:35},
+        {label:"Sei o que é, mas nunca usei uma", score:65},
+        {label:"Sim, e já integrei/usei uma na prática", score:100}
+      ]
+    },
+    {
+      cat:"estrategia",
+      text:"Quando você vai criar um novo canal, você valida a ideia como?",
+      options:[
+        {label:"Chuto, ou copio o que vi alguém fazendo", score:10},
+        {label:"Peço a opinião de alguém e confio nisso", score:40},
+        {label:"Faço uma pesquisa rápida antes de decidir", score:70},
+        {label:"Valido com dado real (Outliers, Oferta e Demanda, Concorrência) antes de começar", score:100}
+      ]
+    },
+    {
+      cat:"estrategia",
+      text:"Ainda sobre validação, você utiliza alguma ferramenta pra otimizar seus Temas, Título e Ideias pra novos conteúdos?",
+      options:[
+        {label:"Não, decido no feeling / não uso nada específico", score:10},
+        {label:"Uso alguma ferramenta gratuita básica (ex: Google Trends)", score:40},
+        {label:"Uso ferramentas pagas de pesquisa (VidIQ, TubeBuddy, etc.)", score:70},
+        {label:"Uso com maestria ferramentas avançadas de mineração de dados (NexLev e afins) e valido com outliers antes de decidir", score:100}
+      ]
+    },
+    {
+      cat:"estrategia",
+      text:"Quantos canais você está gerenciando ativamente agora, de verdade?",
+      options:[
+        {label:"Nenhum rodando de verdade", score:10},
+        {label:"1 canal", score:40},
+        {label:"2 a 3 canais", score:70},
+        {label:"4 ou mais canais", score:100}
+      ]
+    },
+    {
+      cat:"investimento",
+      text:"Quanto em média você gasta com todas as ferramentas pro seu processo?",
+      options:[
+        {label:"Não pago nada, uso só o gratuito", score:10},
+        {label:"Até R$150/mês", score:40},
+        {label:"R$150 a R$500/mês", score:70},
+        {label:"Mais de R$500/mês", score:100}
+      ]
+    }
+  ];
+
+  var INTENT_QUESTION = {
+    cat:"interesse",
+    scored:false,
+    text:"O que faz mais sentido pra você agora?",
+    options:[
+      {label:"Comprar a automação pronta e rodando", value:"automacao"},
+      {label:"Aprender o método comigo (curso/mentoria)", value:"curso"},
+      {label:"Ainda não sei, quero entender as opções", value:"indefinido"}
+    ]
+  };
+
+  var FLOW = QUESTIONS.concat([INTENT_QUESTION]);
+
+  function aulasRecomendadas(score){
+    if(score < 25) return 8;
+    if(score < 45) return 6;
+    if(score < 65) return 4;
+    if(score < 85) return 2;
+    return 1;
+  }
+
+  function catScores(answers){
+    var sums={}, counts={};
+    CATS.forEach(function(c){ sums[c.key]=0; counts[c.key]=0; });
+    QUESTIONS.forEach(function(q,i){
+      sums[q.cat]+=answers[i];
+      counts[q.cat]+=1;
+    });
+    var out={};
+    CATS.forEach(function(c){ out[c.key]=Math.round(sums[c.key]/counts[c.key]); });
+    return out;
+  }
+
+  function overallScore(cs){
+    var total=0;
+    VISIBLE_CATS.forEach(function(c){ total+=cs[c.key]; });
+    return Math.round(total/VISIBLE_CATS.length);
+  }
+
+  function esc(s){
+    var d=document.createElement("div");
+    d.textContent = s==null ? "" : String(s);
+    return d.innerHTML;
+  }
+
+  function buildWhatsAppLink(nome, contato, cs, overall, aulas, valor, interesseLabel){
+    var linhas = [];
+    linhas.push("📊 *Raio-X do Operador*");
+    linhas.push("");
+    linhas.push("Nome: " + nome);
+    linhas.push("Contato: " + contato);
+    linhas.push("");
+    linhas.push("Nível geral: " + overall + "%");
+    VISIBLE_CATS.forEach(function(c){
+      linhas.push(c.icon + " " + c.label + ": " + cs[c.key] + "%");
+    });
+    linhas.push("💰 Investimento em ferramentas: " + cs.investimento + "% (uso interno)");
+    linhas.push("");
+    linhas.push("Interesse: " + (interesseLabel || "não informado"));
+    linhas.push("Aulas recomendadas: " + aulas + " (~R$ " + valor.toLocaleString("pt-BR") + ")");
+    var texto = linhas.join("\n");
+    return "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(texto);
+  }
+
+  var LETTERS = ["A","B","C","D"];
+
+  var state = {
+    step: -1,
+    nome: "",
+    contato: "",
+    answers: new Array(QUESTIONS.length).fill(null),
+    interesse: null
+  };
+
+  var app = document.getElementById("app");
+
+  function render(){
+    if(state.step === -1) return renderIntro();
+    if(state.step >= 0 && state.step < FLOW.length) return renderQuestion(state.step);
+    return renderResult();
+  }
+
+  function renderIntro(){
+    app.innerHTML =
+      '<div class="hero"><div class="hero-glow"></div>' +
+        '<div class="eyebrow">Raio-X do Operador</div>' +
+        '<h1 class="giant">ONDE VOCÊ<br>TRAVA?</h1>' +
+        '<p class="subtitle"><strong>Perguntas diretas sobre como você produz vídeo hoje.</strong><br>' +
+        '<span>Responde com sinceridade — no final você vê seu nível atual e o quanto dá pra destravar, sem filtro.</span></p>' +
+      '</div>' +
+      '<div class="field"><label for="nome-input">Seu nome</label>' +
+        '<input id="nome-input" type="text" placeholder="Como podemos te chamar" autocomplete="name" value="'+esc(state.nome)+'"></div>' +
+      '<div class="field"><label for="contato-input">WhatsApp ou e-mail</label>' +
+        '<input id="contato-input" type="text" placeholder="Pra te enviar o retorno" autocomplete="tel" value="'+esc(state.contato)+'"></div>' +
+      '<button class="btn btn-gradient" id="start-btn" type="button">Começar diagnóstico</button>';
+
+    var nomeEl = document.getElementById("nome-input");
+    var contatoEl = document.getElementById("contato-input");
+    var btn = document.getElementById("start-btn");
+
+    function checkValid(){
+      btn.disabled = nomeEl.value.trim().length < 2 || contatoEl.value.trim().length < 5;
+    }
+    nomeEl.addEventListener("input", function(){ state.nome = nomeEl.value; checkValid(); });
+    contatoEl.addEventListener("input", function(){ state.contato = contatoEl.value; checkValid(); });
+    checkValid();
+
+    btn.addEventListener("click", function(){
+      if(btn.disabled) return;
+      state.step = 0;
+      render();
+    });
+  }
+
+  function renderQuestion(i){
+    var q = FLOW[i];
+    var cat = catOf(q.cat);
+    var isScored = q.scored !== false;
+    var pct = Math.round((i/FLOW.length)*100);
+
+    var optsHtml = q.options.map(function(o,oi){
+      var selected;
+      if(isScored){ selected = state.answers[i]===o.score ? " selected" : ""; }
+      else { selected = state.interesse===o.value ? " selected" : ""; }
+      var dataAttr = isScored ? ('data-score="'+o.score+'"') : ('data-value="'+esc(o.value)+'"');
+      return '<button type="button" class="opt '+cat.color+selected+'" '+dataAttr+'>' +
+        '<span class="opt-mark">'+LETTERS[oi]+'</span><span>'+esc(o.label)+'</span></button>';
+    }).join("");
+
+    app.innerHTML =
+      (i>0 ? '<button type="button" class="back-link" id="back-btn">&larr; voltar</button>' : '') +
+      '<div class="progress-row">' +
+        '<div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>' +
+        '<span class="progress-label mono">Q'+(i+1<10?"0":"")+(i+1)+' / '+FLOW.length+'</span>' +
+      '</div>' +
+      '<div class="q-header">' +
+        '<div class="q-icon '+cat.color+'">'+cat.icon+'</div>' +
+        '<div><span class="tag '+cat.color+'">'+esc(cat.label)+'</span>' +
+        '<h2 class="question">'+esc(q.text)+'</h2></div>' +
+      '</div>' +
+      '<div class="options">'+optsHtml+'</div>';
+
+    requestAnimationFrame(function(){
+      var fill = document.getElementById("progress-fill");
+      if(fill) fill.style.transform = "scaleX(" + (pct/100) + ")";
+    });
+
+    if(i>0){
+      document.getElementById("back-btn").addEventListener("click", function(){
+        state.step = i-1;
+        render();
+      });
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll(".opt"), function(btn){
+      btn.addEventListener("click", function(){
+        if(isScored){
+          state.answers[i] = parseInt(btn.getAttribute("data-score"),10);
+        } else {
+          state.interesse = btn.getAttribute("data-value");
+        }
+        render();
+        setTimeout(function(){
+          state.step = i+1;
+          render();
+        }, 260);
+      });
+    });
+  }
+
+  function renderResult(){
+    var cs = catScores(state.answers);
+    var overall = overallScore(cs);
+    var aulas = aulasRecomendadas(overall);
+    var valor = aulas * PRECO_AULA;
+    var interesseLabel = INTERESSE_LABELS[state.interesse] || null;
+    var primeiroNome = (state.nome||"").split(" ")[0] || "Tudo certo";
+
+    var rowsHtml = VISIBLE_CATS.map(function(c){
+      var v = cs[c.key];
+      return '<li>' +
+        '<div class="module-num '+c.color+'">'+c.icon+'</div>' +
+        '<div class="module-text">' +
+          '<strong>'+esc(c.label)+'</strong>' +
+          '<div class="cat-desc">'+esc(c.desc)+'</div>' +
+          '<div class="module-bar-track"><div class="module-bar-fill" style="width:'+v+'%"></div></div>' +
+          '<span>'+v+'% atual · <span class="gold">'+(100-v)+'% pra destravar</span></span>' +
+        '</div>' +
+      '</li>';
+    }).join("");
+
+    var waLink = buildWhatsAppLink(state.nome, state.contato, cs, overall, aulas, valor, interesseLabel);
+
+    app.innerHTML =
+      '<div class="result-header">' +
+        '<div class="score-circle">'+overall+'%</div>' +
+        '<div class="result-header-text"><h2>'+esc(primeiroNome)+', você está usando <strong style="color:var(--gold);">'+overall+'%</strong> do potencial máximo que eu consigo te ajudar a alcançar.</h2></div>' +
+      '</div>' +
+      '<p class="section-label">Seu mapa por área</p>' +
+      '<ul class="module-list">'+rowsHtml+'</ul>' +
+      '<hr class="divider">' +
+      '<div class="result-box gold" style="margin-bottom:16px;">' +
+        '<h4>Próximo passo</h4>' +
+        '<p>Toca no botão abaixo pra enviar seu diagnóstico direto pro meu WhatsApp — eu te respondo com seu planejamento e valor.</p>' +
+      '</div>' +
+      '<a class="btn btn-whatsapp" id="wa-btn" href="'+waLink+'" target="_blank" rel="noopener">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>' +
+        'Enviar meu diagnóstico no WhatsApp' +
+      '</a>';
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
